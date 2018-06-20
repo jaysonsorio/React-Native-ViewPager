@@ -7,6 +7,8 @@
 import { PanResponder, Platform, ScrollView, StyleSheet, View, ViewPagerAndroid } from 'react-native'
 import React, { Component } from 'react'
 
+import ViewPagerAndroidContainer from './ViewPagerAndroidContainer';
+
 const SCROLLVIEW_REF = 'scrollView'
 const VIEWPAGER_REF = 'viewPager'
 
@@ -59,14 +61,16 @@ export default class ViewPager extends Component {
 
     render () {
         return (this.props.forceScrollView || Platform.OS === 'ios') ? this._renderOnIOS() : (
-            <ViewPagerAndroid
-                {...this.props}
-                scrollEnabled={this.props.horizontalScroll ? true : false}
-                ref={VIEWPAGER_REF}
-                key={this.props.children ? this.props.children.length : 0}
-                onPageScroll={this._onPageScrollOnAndroid}
-                onPageSelected={this._onPageSelectedOnAndroid}
-            />
+            <ViewPagerAndroidContainer style={{ flex: 1 }}>
+              <ViewPagerAndroid
+                  {...this.props}
+                  scrollEnabled={this.props.horizontalScroll ? true : false}
+                  ref={VIEWPAGER_REF}
+                  key={this.props.children ? this.props.children.length : 0}
+                  onPageScroll={this._onPageScrollOnAndroid}
+                  onPageSelected={this._onPageSelectedOnAndroid}
+              />
+            </ViewPagerAndroidContainer>
         )
     }
 
@@ -89,7 +93,6 @@ export default class ViewPager extends Component {
             onLayout: this._onScrollViewLayout,
             horizontal: true,
             pagingEnabled: this.props.horizontalScroll ? true : false,
-            scrollEnabled: this.props.horizontalScroll ? true : false,
             scrollsToTop: false,
             showsHorizontalScrollIndicator: false,
             showsVerticalScrollIndicator: false,
